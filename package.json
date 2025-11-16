@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && ../app/generated/prisma",
     "start": "next start",
     "lint": "eslint"
-  },
+  },  
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "bcrypt": "^6.0.0",
