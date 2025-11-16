@@ -1,0 +1,147 @@
+reamining scheama.
+
+
+model PgListing {
+  id      String @id @default(uuid())
+  ownerId String
+  owner   SignUp @relation(fields: [ownerId], references: [id])
+
+  pgName          String
+  ownerName       String
+  contactNumber   String
+  alternateNumber String
+  email           String
+  whatsappNumber  String
+  website         String
+
+  address   String
+  city      String
+  locality  String
+  landmark  String
+  latitude  Float
+  longitude Float
+
+  pgType        String
+  roomTypes     String
+  totalCapacity Int
+  availability  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pricing      Pricing?         @relation("ListingPricing")
+  amenities    Amenities?       @relation("ListingAmenities")
+  food         Food?            @relation("ListingFood")
+  preferences  Preferences?     @relation("ListingPreferences")
+  operational  OperationalInfo? @relation("ListingOperational")
+  verification Verification?    @relation("ListingVerification")
+
+  media   PgMedia[]
+  ratings Ratings[]
+}
+
+model Pricing {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   PgListing @relation("ListingPricing", fields: [listingId], references: [id])
+
+  single            Int
+  double            Int
+  triple            Int
+  fourPlus          Int
+  securityDeposit   Int
+  noticePeriod      Int
+  includesFood      Boolean
+  includesUtilities Boolean
+}
+
+model Amenities {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   PgListing @relation("ListingAmenities", fields: [listingId], references: [id])
+
+  wifi             Boolean
+  hotWater         Boolean
+  laundry          Boolean
+  washingMachine   Boolean
+  housekeeping     Boolean
+  attachedBathroom Boolean
+  ac               Boolean
+  tv               Boolean
+  powerBackup      Boolean
+  parkingTwo       Boolean
+  parkingFour      Boolean
+  lift             Boolean
+  securityCctv     Boolean
+  drinkingWater    Boolean
+  warden24x7       Boolean
+  commonKitchen    Boolean
+  fridge           Boolean
+  gym              Boolean
+}
+
+model Food {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   PgListing @relation("ListingFood", fields: [listingId], references: [id])
+
+  breakfast Boolean
+  lunch     Boolean
+  dinner    Boolean
+  veg       Boolean
+  nonveg    Boolean
+  timings   String
+  weeklyOff String
+}
+
+model Preferences {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   PgListing @relation("ListingPreferences", fields: [listingId], references: [id])
+
+  allowedWorking  Boolean
+  allowedStudents Boolean
+  smokingAllowed  Boolean
+  drinkingAllowed Boolean
+  petsAllowed     Boolean
+  curfewTimings   String
+}
+
+model OperationalInfo {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   PgListing @relation("ListingOperational", fields: [listingId], references: [id])
+
+  checkIn          String
+  checkOut         String
+  serviceContact   String
+  emergencyContact String
+}
+
+model Verification {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   PgListing @relation("ListingVerification", fields: [listingId], references: [id])
+
+  ownerIdProofUrl  String
+  propertyProofUrl String
+  gstNumber        String
+}
+
+model PgMedia {
+  id        String    @id @default(uuid())
+  listingId String
+  listing   PgListing @relation(fields: [listingId], references: [id])
+  url       String
+  type      String
+  createdAt DateTime  @default(now())
+}
+
+model Ratings {
+  id            String    @id @default(uuid())
+  listingId     String
+  listing       PgListing @relation(fields: [listingId], references: [id])
+  averageRating Float
+  review        String
+  createdAt     DateTime  @default(now())
+}
