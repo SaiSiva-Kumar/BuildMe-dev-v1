@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "../../generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 function parseDobToDate(input: string): Date | null {
-  if (!input) return null;
+  if(!input) return null;
+
   const parts = input.split("-").map((p) => p.trim());
   let day: number, month: number, year: number;
 
